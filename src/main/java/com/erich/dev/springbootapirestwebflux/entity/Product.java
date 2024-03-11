@@ -1,7 +1,6 @@
 package com.erich.dev.springbootapirestwebflux.entity;
 
 
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -16,7 +15,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+//@Table(name = "products")
 @Document(collection = "products")
 public class Product {
 

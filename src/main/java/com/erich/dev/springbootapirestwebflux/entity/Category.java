@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+//@Table(name = "categories")
 @Document(collection = "categories")
 public class Category {
 

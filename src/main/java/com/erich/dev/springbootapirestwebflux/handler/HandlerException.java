@@ -1,6 +1,8 @@
 package com.erich.dev.springbootapirestwebflux.handler;
 
+import com.erich.dev.springbootapirestwebflux.exception.BadRequestException;
 import com.erich.dev.springbootapirestwebflux.exception.NotFoundException;
+import com.erich.dev.springbootapirestwebflux.exception.UnauthorizedException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -37,6 +39,23 @@ public class HandlerException {
         });
         problemDetail.setTitle("Validation Error");
         problemDetail.setProperty("errors", maps);
+        return problemDetail;
+    }
+
+
+    @ExceptionHandler(BadRequestException.class)
+    public ProblemDetail badRequest(BadRequestException e){
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problemDetail.setTitle("Bad Request");
+        problemDetail.setDetail(e.getMessage());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ProblemDetail unauthorized(UnauthorizedException e){
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
+        problemDetail.setTitle("UNAUTHORIZED");
+        problemDetail.setDetail(e.getMessage());
         return problemDetail;
     }
 }

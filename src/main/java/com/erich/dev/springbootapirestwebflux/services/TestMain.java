@@ -1,20 +1,18 @@
 package com.erich.dev.springbootapirestwebflux.services;
 
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.reactivestreams.FlowAdapters;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Stream;
+import java.util.concurrent.Flow;
 
 import static java.lang.StringTemplate.STR;
 
-class Employe{
+class Employe {
     int id;
     String name;
 
@@ -82,7 +80,7 @@ public class TestMain {
                 .flatMap(Flux::collectList)
                 .collectMap(e -> e.getFirst().getDepartment(), e -> e)
                 .doOnNext(System.out::println).subscribe();
-*/
+
 
         Flux<String> names = Flux.just("Alice", null, "Charlie", "David", "Eva");
 
@@ -96,4 +94,15 @@ public class TestMain {
      }
 
 
+}
+*/
+
+
+         String roles = "ROLE_ADMIN, ROLE_USER";
+         String[] split = roles.split(", ");
+            for (String s : split) {
+                System.out.println(s);
+            }
+
+     }
 }

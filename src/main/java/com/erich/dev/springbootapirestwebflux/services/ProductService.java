@@ -23,10 +23,4 @@ public interface ProductService {
     Mono<Product> updateProduct(String id, Product product);
 
     Mono<Void> deleteProduct(String id);
-
-    Flux<Category> findAllCategories();
-
-    Mono<Category> findByIdCategory(String id);
-
-    Mono<Category> saveCategory(Category category);
 }

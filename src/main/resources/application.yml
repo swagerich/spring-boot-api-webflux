@@ -10,3 +10,19 @@ logging:
           mongodb:
             core:
               ReactiveMongoTemplate: TRACE
+
+jwt:
+  secret: e7918a5ed84f1c35da180cadc375efa01bd50323f27b747bd6b802cefa48f487
+  expiration: 86400000
+
+#spring:
+#  r2dbc:
+#    url: r2dbc:postgresql://localhost:5432/shopping_reactive
+#    username: postgres
+#    password: 12345
+#
+#  flyway:
+#      url: jdbc:postgresql://localhost:5432/shopping_reactive
+#      user: postgres
+#      password: 12345
+

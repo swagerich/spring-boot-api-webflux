@@ -18,14 +18,13 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.UUID;
 
-@Service @RequiredArgsConstructor
+@Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 
-
     private final CategoryRepository categoryRepository;
-
 
     @Override
     public Flux<Product> getAllProducts() {
@@ -38,7 +37,8 @@ public class ProductServiceImpl implements ProductService {
         Flux<Product> allProducts = productRepository.findAll().map(product -> {
             product.setName(product.getName().toUpperCase());
             return product;
-        });;
+        });
+        ;
         return allProducts;
     }
 
@@ -55,12 +55,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Mono<Product> uploadImage(String id, FilePart file) {
         return productRepository.findById(id).flatMap(p -> {
-            String uniqueFileName = UUID.randomUUID() + "-" + file.filename().replace(" ", "_")
+            String uniqueFileName = STR."\{UUID.randomUUID()}-\{file.filename().replace(" ", "_")
                     .replace(":", "")
                     .replace("\\", "")
-                    .replace("/", "");
+                    .replace("/", "")}";
             p.setPhoto(uniqueFileName);
-            if(!file.filename().isEmpty()){
+            if (!file.filename().isEmpty()) {
                 Path path = Path.of("C:\\Users\\erick\\OneDrive\\Escritorio\\webflux").resolve(p.getPhoto()).toAbsolutePath();
                 return file.transferTo(path).then(productRepository.save(p));
             }
@@ -70,12 +70,17 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Mono<Product> saveProduct(Product product) {
-        return productRepository.save(product);
+        return categoryRepository.findById(product.getCategory().getId())
+                .switchIfEmpty(Mono.error(new NotFoundException("Category not found")))
+                .flatMap(category -> {
+                    product.setCategory(category);
+                    return productRepository.save(product);
+                });
     }
 
     @Override
     public Mono<Product> updateProduct(String id, Product product) {
-      return  productRepository.findById(id)
+        return productRepository.findById(id)
                 .flatMap(p -> {
                     p.setName(product.getName());
                     p.setPrice(product.getPrice());
@@ -87,21 +92,5 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Mono<Void> deleteProduct(String id) {
         return productRepository.findById(id).switchIfEmpty(Mono.error(new NotFoundException("Product not found"))).flatMap(x -> productRepository.deleteById(id));
-    }
-
-
-    @Override
-    public Flux<Category> findAllCategories() {
-        return categoryRepository.findAll();
-    }
-
-    @Override
-    public Mono<Category> findByIdCategory(String id) {
-        return categoryRepository.findById(id);
-    }
-
-    @Override
-    public Mono<Category> saveCategory(Category category) {
-        return categoryRepository.save(category);
     }
 }

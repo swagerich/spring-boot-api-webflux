@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -17,7 +18,7 @@ import java.util.Date;
 @NoArgsConstructor
 //@Table(name = "products")
 @Document(collection = "products")
-public class Product {
+public class Product implements Serializable {
 
     @Id
     private String id;

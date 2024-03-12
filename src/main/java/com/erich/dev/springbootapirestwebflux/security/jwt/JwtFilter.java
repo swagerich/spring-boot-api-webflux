@@ -1,5 +1,7 @@
 package com.erich.dev.springbootapirestwebflux.security.jwt;
 
+import com.erich.dev.springbootapirestwebflux.exception.BadRequestException;
+import com.erich.dev.springbootapirestwebflux.exception.UnauthorizedException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
@@ -21,11 +23,11 @@ public class JwtFilter implements WebFilter {
 
         var auth = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
         if (auth == null) {
-            return Mono.error(() -> new RuntimeException("No token was found"));
+            return Mono.error(() -> new BadRequestException("No token was found"));
         }
 
         if (!auth.startsWith("Bearer ")) {
-            return Mono.error(() -> new RuntimeException("Invalid authorization"));
+            return Mono.error(() -> new UnauthorizedException("Invalid authorization"));
         }
 
         var token = auth.replace("Bearer ", "");

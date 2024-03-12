@@ -1,6 +1,6 @@
 package com.erich.dev.springbootapirestwebflux.services.impl;
 
-import com.erich.dev.springbootapirestwebflux.entity.Category;
+
 import com.erich.dev.springbootapirestwebflux.entity.Product;
 import com.erich.dev.springbootapirestwebflux.exception.NotFoundException;
 import com.erich.dev.springbootapirestwebflux.repository.CategoryRepository;
@@ -8,13 +8,13 @@ import com.erich.dev.springbootapirestwebflux.repository.ProductRepository;
 import com.erich.dev.springbootapirestwebflux.services.ProductService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.util.UUID;
 
@@ -27,6 +27,7 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository;
 
     @Override
+    @Cacheable("getAllProducts")
     public Flux<Product> getAllProducts() {
         Flux<Product> allProducts = productRepository.findAll();
         return allProducts;

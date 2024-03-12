@@ -98,11 +98,6 @@ public class TestMain {
 */
 
 
-         String roles = "ROLE_ADMIN, ROLE_USER";
-         String[] split = roles.split(", ");
-            for (String s : split) {
-                System.out.println(s);
-            }
 
      }
 }

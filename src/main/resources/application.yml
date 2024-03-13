@@ -20,6 +20,8 @@ jwt:
   secret: e7918a5ed84f1c35da180cadc375efa01bd50323f27b747bd6b802cefa48f487
   expiration: 86400000
 
+endpoint:
+  rikyandmorty: https://rickandmortyapi.com/api
 
 #spring:
 #  r2dbc:

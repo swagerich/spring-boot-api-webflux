@@ -9,6 +9,11 @@ import com.erich.dev.springbootapirestwebflux.services.ProductService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +34,24 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Cacheable("getAllProducts")
     public Flux<Product> getAllProducts() {
-        Flux<Product> allProducts = productRepository.findAll();
-        return allProducts;
+        return productRepository.findAll();
+    }
+
+    @Override
+//    @Cacheable("findAllPage")
+    public Mono<Page<Product>> findAllPage(Pageable pageable, boolean isPageable) {
+        return Mono.defer(() -> {
+            if (isPageable) {
+                return productRepository.findAllWithPageable(pageable, true)
+                        .collectList()
+                        .zipWith(productRepository.countAllWithPageable(pageable))
+                        .map(tuple -> new PageImpl<>(tuple.getT1(), pageable, tuple.getT2()))
+                        .map(page -> page);
+            } else {
+                return productRepository.findAll()
+                        .collectList().map( page -> new PageImpl<>(page, Pageable.unpaged(), 0));
+            }
+        });
     }
 
     @Override

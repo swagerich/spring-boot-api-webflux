@@ -3,6 +3,8 @@ package com.erich.dev.springbootapirestwebflux.controller;
 import com.erich.dev.springbootapirestwebflux.entity.Product;
 import com.erich.dev.springbootapirestwebflux.services.ProductService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.multipart.FilePart;
@@ -27,6 +29,10 @@ public class ProductController {
     public Mono<ResponseEntity<Flux<Product>>> list(){
       return   Mono.just(ResponseEntity.ok().body(productService.getAllProducts()));
     }
+    @GetMapping("/page")
+    public Mono<Page<Product>> findAllPage(Pageable pageable,@RequestParam(name = "isPage")  boolean isPageable){
+        return productService.findAllPage(pageable, isPageable);
+    }
 
     @GetMapping("{id}")
     public Mono<ResponseEntity<Product>> findById(@PathVariable String id){
@@ -47,7 +53,7 @@ public class ProductController {
                 .map(ResponseEntity::ok);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public Mono<ResponseEntity<Product>> save(@Valid @RequestBody Mono<Product> monoProduct){
       return  monoProduct.flatMap(product -> productService.saveProduct(product)

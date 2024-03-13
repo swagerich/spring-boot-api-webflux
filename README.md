@@ -7,6 +7,11 @@
 - Netty
 - Security
 - Lombok
+- JUnit 5
+- Mockito
+- Redis
+- WebClient
+- MongoDB
 
 
 

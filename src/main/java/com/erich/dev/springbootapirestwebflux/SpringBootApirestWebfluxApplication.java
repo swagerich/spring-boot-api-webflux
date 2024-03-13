@@ -31,9 +31,9 @@ public class SpringBootApirestWebfluxApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        reactiveMongoTemplate.dropCollection("products").subscribe();
-        reactiveMongoTemplate.dropCollection("categories").subscribe();
-        reactiveMongoTemplate.dropCollection("users").subscribe();
+//        reactiveMongoTemplate.dropCollection("products").subscribe();
+//        reactiveMongoTemplate.dropCollection("categories").subscribe();
+//        reactiveMongoTemplate.dropCollection("users").subscribe();
 //
 //        Category category = new Category(null, "Electronics");
 //        Category category2 = new Category(null, "Computers");
